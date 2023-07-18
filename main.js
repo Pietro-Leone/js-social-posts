@@ -51,19 +51,20 @@ const posts = [{
 }
 ];
 const container = document.getElementById("container");
-let like = false;
+let counter = [];
 
 posts.forEach((post, i) => {
     const singleAuthor = post.author;
 
     const date = itDate(post)
+    let propic = singleAuthor.image;
 
     let posts = document.createElement("div");
     posts.classList.add("post");
     posts.innerHTML = `<div class="post__header">
                             <div class="post-meta">
                                 <div class="post-meta__icon">
-                                    <img class="profile-pic" src="${singleAuthor.image}" alt="${singleAuthor.name}">
+                                    <img class="profile-pic" src="${propic}" alt="${singleAuthor.name}">
                                 </div>
                                 <div class="post-meta__data">
                                     <div class="post-meta__author">${singleAuthor.name}</div>
@@ -78,7 +79,7 @@ posts.forEach((post, i) => {
                         <div class="post__footer">
                             <div class="likes js-likes">
                                 <div class="likes__cta">
-                                    <a class="like-button js-like-button" href="https://" data-postid="1">
+                                    <a class="like-button js-like-button" href="#0" data-postid="1">
                                         <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                                         <span class="like-button__label">Mi Piace</span>
                                     </a>
@@ -88,30 +89,60 @@ posts.forEach((post, i) => {
                                 </div>
                             </div>
                         </div>`
+
     container.append(posts);
-
-
-
 });
 
-//Ciclo per il Button Like
+
+
+
+//Ciclo per il Button Like e per cambiare la propic se non è presente
 posts.forEach((post, i) => {
+
+    if (post.author.image === null) {
+        const initials = nameLetter(post.author);
+        const propic = initials;
+        let divPropic = document.querySelectorAll(".post-meta__icon");
+        const divPropicI = divPropic[i];
+        divPropicI.innerHTML = ` <div class="profile-pic-default"><span>${propic}</span></div> `
+    }
 
     let btnLike = document.querySelectorAll(".like-button");
     btnLike[i].addEventListener("click", function () {
 
-        if (like === true) {
-            like = false;
-            this.classList.remove("like-button--liked");
+        let controllo = this.classList.toggle("like-button--liked");
+
+        if (controllo === false) {
             let likeCounter = document.querySelectorAll(".js-likes-counter");
             likeCounter[i].innerHTML = post.likes;
+
+            //Controllo se il like è già presente
+            if (counter.indexOf(post.id) !== -1) {
+                let positionId = counter.indexOf(post.id);
+                counter.splice(positionId, 1)
+            }
+            console.log(counter);
+
+            console.log("-1");
         }
         else {
-            like = true;
-            this.classList.add("like-button--liked");
             let likeCounter = document.querySelectorAll(".js-likes-counter");
             likeCounter[i].innerHTML = post.likes + 1;
+
+            //Controllo se il like è già presente
+            if (counter.indexOf(post.id) !== -1) {
+                let positionId = counter.indexOf(post.id);
+                counter.splice(positionId, 1)
+            }
+            else {
+                counter.push(post.id);
+            }
+            console.log(counter);
+
+            console.log("+1");
         }
+
+
 
     })
 
@@ -129,4 +160,12 @@ function itDate(post) {
     return itDate;
 }
 
+//Funzione che in caso dell'assenza di una propic  crea un elemento di fallback contenente le iniziali dell'utente
+function nameLetter(singleAuthor) {
 
+    const nameSplit = singleAuthor.name.split(" ");
+    const firstName = nameSplit[0][0];
+    const lastName = nameSplit[1][0];
+    const nameLetter = `${firstName} ${lastName}`
+    return nameLetter;
+}

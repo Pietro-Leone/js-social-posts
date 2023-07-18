@@ -141,7 +141,7 @@ posts.forEach((post, i) => {
             }
             console.log("+1");
         }
-        console.log("like messi a: ", counter);
+        console.log("likes:", counter.length, "\nliked ID:", counter.toString());
     })
 
 });

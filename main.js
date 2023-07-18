@@ -1,3 +1,6 @@
+'use strict'
+
+//Creo l'array di oggetto
 const posts = [{
     "id": 1,
     "content": "Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.",
@@ -50,16 +53,19 @@ const posts = [{
     "created": "2021-03-05"
 }
 ];
+
+//dichiaro le altre variabili globali
 const container = document.getElementById("container");
 let counter = [];
 
+//Ciclo For in cui stampo i singoli Post con tutte le informazioni estrapolate dall'array di oggetti
 posts.forEach((post, i) => {
-    const singleAuthor = post.author;
 
+    const singleAuthor = post.author;
     const date = itDate(post)
     let propic = singleAuthor.image;
-
     let posts = document.createElement("div");
+
     posts.classList.add("post");
     posts.innerHTML = `<div class="post__header">
                             <div class="post-meta">
@@ -93,9 +99,6 @@ posts.forEach((post, i) => {
     container.append(posts);
 });
 
-
-
-
 //Ciclo per il Button Like e per cambiare la propic se non è presente
 posts.forEach((post, i) => {
 
@@ -110,6 +113,7 @@ posts.forEach((post, i) => {
     let btnLike = document.querySelectorAll(".like-button");
     btnLike[i].addEventListener("click", function () {
 
+        //il toggle restituisce un booleano
         let controllo = this.classList.toggle("like-button--liked");
 
         if (controllo === false) {
@@ -121,8 +125,6 @@ posts.forEach((post, i) => {
                 let positionId = counter.indexOf(post.id);
                 counter.splice(positionId, 1)
             }
-            console.log(counter);
-
             console.log("-1");
         }
         else {
@@ -137,27 +139,22 @@ posts.forEach((post, i) => {
             else {
                 counter.push(post.id);
             }
-            console.log(counter);
-
             console.log("+1");
         }
-
-
-
+        console.log("like messi a: ", counter);
     })
 
 });
 
 //Funzione che inverte la data e la trasforma in formato IT
 function itDate(post) {
+
     const date = post.created;
     const dateSplit = date.split("-");
-    dateSplit.splice(0, 0, `${dateSplit[2]}`)
-    dateSplit.splice(1, 0, `${dateSplit[2]}`)
-    dateSplit.pop()
-    dateSplit.pop()
+    dateSplit.reverse();
     const itDate = `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}`;
     return itDate;
+
 }
 
 //Funzione che in caso dell'assenza di una propic  crea un elemento di fallback contenente le iniziali dell'utente
@@ -168,4 +165,5 @@ function nameLetter(singleAuthor) {
     const lastName = nameSplit[1][0];
     const nameLetter = `${firstName} ${lastName}`
     return nameLetter;
+
 }

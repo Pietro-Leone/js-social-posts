@@ -51,6 +51,7 @@ const posts = [{
 }
 ];
 const container = document.getElementById("container");
+let like = false;
 
 posts.forEach((post, i) => {
     const singleAuthor = post.author;
@@ -74,7 +75,7 @@ posts.forEach((post, i) => {
                         <div class="post__footer">
                             <div class="likes js-likes">
                                 <div class="likes__cta">
-                                    <a class="like-button  js-like-button" href="#" data-postid="1">
+                                    <a class="like-button js-like-button" href="javascript:;" data-postid="1">
                                         <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                                         <span class="like-button__label">Mi Piace</span>
                                     </a>
@@ -85,5 +86,30 @@ posts.forEach((post, i) => {
                             </div>
                         </div>`
     container.append(posts);
+
+
+
+});
+
+posts.forEach((post, i) => {
+
+    let btnLike = document.querySelectorAll(".like-button");
+    btnLike[i].addEventListener("click", function () {
+        console.log(i)
+
+        if (like === true) {
+            like = false;
+            this.classList.remove("like-button--liked");
+            let likeCounter = document.querySelectorAll(".js-likes-counter");
+            likeCounter[i].innerHTML = post.likes;
+        }
+        else {
+            like = true;
+            this.classList.add("like-button--liked");
+            let likeCounter = document.querySelectorAll(".js-likes-counter");
+            likeCounter[i].innerHTML = post.likes + 1;
+        }
+
+    })
 
 });

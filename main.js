@@ -55,6 +55,9 @@ let like = false;
 
 posts.forEach((post, i) => {
     const singleAuthor = post.author;
+
+    const date = itDate(post)
+
     let posts = document.createElement("div");
     posts.classList.add("post");
     posts.innerHTML = `<div class="post__header">
@@ -64,7 +67,7 @@ posts.forEach((post, i) => {
                                 </div>
                                 <div class="post-meta__data">
                                     <div class="post-meta__author">${singleAuthor.name}</div>
-                                    <div class="post-meta__time">${post.created}</div>
+                                    <div class="post-meta__time">${date}</div>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +78,7 @@ posts.forEach((post, i) => {
                         <div class="post__footer">
                             <div class="likes js-likes">
                                 <div class="likes__cta">
-                                    <a class="like-button js-like-button" href="javascript:;" data-postid="1">
+                                    <a class="like-button js-like-button" href="https://" data-postid="1">
                                         <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                                         <span class="like-button__label">Mi Piace</span>
                                     </a>
@@ -91,11 +94,11 @@ posts.forEach((post, i) => {
 
 });
 
+//Ciclo per il Button Like
 posts.forEach((post, i) => {
 
     let btnLike = document.querySelectorAll(".like-button");
     btnLike[i].addEventListener("click", function () {
-        console.log(i)
 
         if (like === true) {
             like = false;
@@ -113,3 +116,17 @@ posts.forEach((post, i) => {
     })
 
 });
+
+//Funzione che inverte la data e la trasforma in formato IT
+function itDate(post) {
+    const date = post.created;
+    const dateSplit = date.split("-");
+    dateSplit.splice(0, 0, `${dateSplit[2]}`)
+    dateSplit.splice(1, 0, `${dateSplit[2]}`)
+    dateSplit.pop()
+    dateSplit.pop()
+    const itDate = `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}`;
+    return itDate;
+}
+
+
